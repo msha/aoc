@@ -9,6 +9,7 @@ def open_file_to(file):
             values = []
             for value in line.split(' '):
                 values.append(value.strip())
+            values.reverse()
             array.append(values) 
     return array
 
