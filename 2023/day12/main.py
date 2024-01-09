@@ -1,4 +1,6 @@
 from itertools import combinations,permutations,product
+import re
+from functools import lru_cache
 
 input = "input.txt"
 test = "testinput.txt"
@@ -8,47 +10,32 @@ def open_file_to(file):
     with open(file, 'r') as file:
         for line in file:
             a = line.split(' ')[0].strip()
-            b = line.split(' ')[1].strip()
-            array.append({"field":a,"info":b}) 
+            b = tuple(map(int, line.split(' ')[1].strip().split(',')))
+            array.append((a+('?'+a)*4,b*5)) 
     return array
-
 values = open_file_to(input)
 
-import itertools
+@lru_cache(maxsize=None)
+def count_permutations(game):
+    field, info = game
+    if "?" not in field:
+        return tuple(map(len, re.findall(r"#+", field))) == info
 
-def count_permutations(field, info):
-    # Convert the info string into a list of integers
-    info = [int(x) for x in info.split(',')]
-    
-    # Generate all possible fillings for '?'
-    fill_options = [(char if char != '?' else ['0', '1']) for char in field]
-    all_combinations = list(product(*fill_options))
-    
-    valid_permutations = 0
-    for combination in all_combinations:
-        # Convert the tuple to a string, replacing '0' with '.'
-        filled_field = ''.join(combination).replace('0', '.')
-        
-        # Check if the filled field matches the info pattern
-        if is_valid(filled_field, info):
-            valid_permutations += 1
-    
-    return valid_permutations
+    question_mark_index = field.index("?")
+    pattern = re.compile(r"#+\.")
+    filled_segments = [(m.start(), m.end()) for m in pattern.finditer(field[:question_mark_index+1])]
+    filled_lengths = [end-start-1 for start, end in filled_segments]
 
-def is_valid(filled_field, info):
-    # Split the filled field by '.' and filter out empty strings
-    groups = [group for group in filled_field.split('.') if group]
-    
-    # Check if the number of '#' matches the info pattern
-    return [len(group) for group in groups] == info
+    if len(info) < len(filled_lengths) or any(info != length for info, length in zip(info, filled_lengths)):
+        return 0
+
+    next_filled_index = 0 if len(filled_segments) == 0 else filled_segments[-1][1]
+    next_info = info[len(filled_lengths):]
+
+    return sum(count_permutations((field[next_filled_index:question_mark_index] + fill + field[question_mark_index+1:], next_info)) for fill in ".#")
 
 total = 0
 for value in values:
-    total += count_permutations(value['field'],value['info'])
-    
+    total += count_permutations(value)
+
 print(total)
-
-
-
-
-# print(values)
