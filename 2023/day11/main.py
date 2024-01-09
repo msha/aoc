@@ -15,7 +15,8 @@ def open_file_to(file):
                     if char != '#':
                         xarray.append(char)
                     else:
-                        xarray.append(count)
+                        star = {"count":count, "x":x,"y":y}
+                        xarray.append(star)
                         count += 1
             array.append(xarray)
     return array,count
@@ -29,28 +30,38 @@ visited = list()
 def adjust_void(array):
     empty_columns = np.where((array == '.').all(axis=0))[0]
     empty_rows = np.where((array == '.').all(axis=1))[0]
+    for x,xc in enumerate(array):
+        x_void = sum(999999 for number in empty_rows if number < x)
+        for y,yc in enumerate(xc):
+            y_void = sum(999999 for number in empty_columns if number < y)
+            if yc != '.':
+                yc['x'] = yc['x'] + y_void
+                yc['y'] = yc['y'] + x_void
     
-    for column in reversed(empty_columns):
-        new_void = np.full((1,array.shape[0]), '.')
-        array = np.insert(array, column + 1, new_void, axis=1)
-    
-    for row in reversed(empty_rows):
-        new_void = np.full((1, array.shape[1]),'.')
-        array = np.insert(array, row + 1, new_void, axis=0)
     return array
+print('adjusting')
 
 galaxy = adjust_void(np.array(lines))
+print('finding')
+import numpy as np
 
-def find_routes(map,pairs):
+def find_routes(map, pairs):
     total = 0
+
+    count_to_coords = {}
+    for (x, y), star in np.ndenumerate(map):
+        if type(star) is not str:
+            count = star.get('count')
+            count_to_coords[count] = (star.get('x'), star.get('y'))
+
     for pair in pairs:
-        x = np.where(map == str(pair[0]))[0]
-        y = np.where(map == str(pair[0]))[1]
-        x2 = np.where(map == str(pair[1]))[0]
-        y2 = np.where(map == str(pair[1]))[1]
-        total += int(abs(x-x2)+abs(y-y2))
+        x1, y1 = count_to_coords[pair[0]]
+        x2, y2 = count_to_coords[pair[1]]
+        total += int(abs(x1-x2)+abs(y1-y2))
+
     return total
+
 
 print(find_routes(galaxy,unique_pairs))
 
-print(galaxy)
+# print(galaxy)
