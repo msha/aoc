@@ -1,16 +1,18 @@
 # AOC
-Advent of Code 2023 - My very bad solutions
+Advent of Code - My very bad solutions
 
-Started in Python, decided to switch Zig, damn too hard for me, quit, came back later again with Python and maybe will finish some day
+Started 2023 Python, decided to switch Zig, damn too hard for me, quit, came back later again with Python and maybe will finish some day.
 
-## Progress
+Maybe maybe, maybe this time i'll try to remember how to use GO. Day 1 was easy, let's see if i can keep up
+
+## Progress 2023/2024
 
 
 `⭐`
 
-| Day | Stars |
-| --- | ----- |
-| 01  | ⭐⭐  |
+| Day | Stars 2023 | Stars 2024
+| --- | ----- | ----- |
+| 01  | ⭐⭐  | ⭐⭐  |
 | 02  | ⭐⭐  |
 | 03  | ⭐⭐  |
 | 04  | ⭐⭐  |
