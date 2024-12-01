@@ -31,15 +31,17 @@ func main() {
 	sort.Ints(list1)
 	sort.Ints(list2)
 
-	var total = 0
+	total := 0
 
-	for i, value := range list1 {
-		value := value - list2[i]
+	for _, value := range list1 {
+		found := 0
+		for _, value2 := range list2 {
+			if value == value2 {
+				found += 1
+			}
 
-		if value < 0 {
-			value = -value
 		}
-		total += value
+		total += value * found
 
 	}
 	fmt.Println(total)
