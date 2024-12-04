@@ -29,26 +29,59 @@ func main() {
 			}
 			numbers[i] = num
 		}
-		fail := 0
-		if numbers[0] == numbers[1] {
-			fail += 1
-		}
-		dir := numbers[fail] < numbers[fail+1]
 
-		value := numbers[fail]
+		valid := false
 
-		for _, w := range numbers[fail+1:] {
-			diff := value - w
-			if dir {
-				diff = -diff
-			}
-			if diff < 1 || diff > 3 {
-				fail += 1
-			} else {
-				value = w
+		dird := true
+		for i := 1; i < len(numbers); i++ {
+			diff := numbers[i-1] - numbers[i]
+			if diff <= 0 || diff > 3 {
+				dird = false
+				break
 			}
 		}
-		if fail < 1 {
+
+		diri := true
+		for i := 1; i < len(numbers); i++ {
+			diff := numbers[i] - numbers[i-1]
+			if diff <= 0 || diff > 3 {
+				diri = false
+				break
+			}
+		}
+
+		valid = diri || dird
+
+		if !valid {
+			for skip := 0; skip < len(numbers); skip++ {
+				dird = true
+				diri = true
+
+				prev := -1
+				for i := 0; i < len(numbers); i++ {
+					if i == skip {
+						continue
+					}
+					if prev != -1 {
+						diff := numbers[prev] - numbers[i]
+						if diff <= 0 || diff > 3 {
+							dird = false
+						}
+						diff = numbers[i] - numbers[prev]
+						if diff <= 0 || diff > 3 {
+							diri = false
+						}
+					}
+					prev = i
+				}
+				if dird || diri {
+					valid = true
+					break
+				}
+			}
+		}
+
+		if valid {
 			total += 1
 		}
 	}
