@@ -13,7 +13,7 @@ Maybe maybe, maybe this time i'll try to remember how to use GO. Day 1 was easy,
 | Day | Stars 2023 | Stars 2024
 | --- | ----- | ----- |
 | 01  | ⭐⭐  | ⭐⭐  |
-| 02  | ⭐⭐  |
+| 02  | ⭐⭐  |⭐⭐  |
 | 03  | ⭐⭐  |
 | 04  | ⭐⭐  |
 | 05  | ⭐⭐  |

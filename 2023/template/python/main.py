@@ -1,9 +1,9 @@
-lines = []
 input = "input.txt"
 test = "testinput.txt"
 
-def open_file_to(file,array):
+def open_file_to(file):
+    array = []
     with open(file, 'r') as file:
-        # Read each line from the file and append to the list
         for line in file:
             array.append(line.strip()) 
+    return array
