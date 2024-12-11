@@ -87,7 +87,7 @@ func countXMAS(s string) int {
 }
 
 func main() {
-	file, _ := os.Open("input.txt")
+	file, _ := os.Open("test.txt")
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
