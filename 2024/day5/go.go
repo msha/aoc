@@ -34,6 +34,71 @@ func isValidUpdate(update []int, rules []Tuple) bool {
 	}
 	return true
 }
+func findValidOrder(update []int, rules []Tuple) []int {
+
+	graph := make(map[int][]int)
+	nodes := make(map[int]bool)
+
+	for _, rule := range rules {
+		before := rule.before
+		after := rule.after
+		inBefore := false
+		inAfter := false
+		for _, num := range update {
+			if num == before {
+				inBefore = true
+				nodes[before] = true
+			}
+			if num == after {
+				inAfter = true
+				nodes[after] = true
+			}
+		}
+		if inBefore && inAfter {
+			if _, exists := graph[before]; !exists {
+				graph[before] = make([]int, 0)
+			}
+			graph[before] = append(graph[before], after)
+		}
+	}
+
+	inDegree := make(map[int]int)
+	for node := range nodes {
+		inDegree[node] = 0
+	}
+	for _, edges := range graph {
+		for _, v := range edges {
+			inDegree[v]++
+		}
+	}
+
+	var queue []int
+	for node := range nodes {
+		if inDegree[node] == 0 {
+			queue = append(queue, node)
+		}
+	}
+
+	var result []int
+	for len(queue) > 0 {
+		u := queue[0]
+		queue = queue[1:]
+		result = append(result, u)
+
+		for _, v := range graph[u] {
+			inDegree[v]--
+			if inDegree[v] == 0 {
+				queue = append(queue, v)
+			}
+		}
+	}
+
+	if len(result) != len(nodes) {
+		return nil
+	}
+
+	return result
+}
 
 func main() {
 	file, _ := os.Open("input.txt")
@@ -43,7 +108,6 @@ func main() {
 
 	var pairs []Tuple
 	var pages [][]string
-	total := 0
 	before := true
 
 	for scanner.Scan() {
@@ -67,7 +131,8 @@ func main() {
 
 	}
 
-	total = 0
+	totalPart1 := 0
+	totalPart2 := 0
 	for _, pageStr := range pages {
 		update := make([]int, len(pageStr))
 		for i, str := range pageStr {
@@ -77,8 +142,15 @@ func main() {
 
 		if isValidUpdate(update, pairs) {
 			middleIdx := len(update) / 2
-			total += update[middleIdx]
+			totalPart1 += update[middleIdx]
+		} else {
+			validOrder := findValidOrder(update, pairs)
+			if validOrder != nil {
+				middleIdx := len(validOrder) / 2
+				totalPart2 += validOrder[middleIdx]
+			}
 		}
 	}
-	fmt.Println("total:", total)
+	fmt.Println("total:", totalPart1)
+	fmt.Println("total:", totalPart2)
 }
