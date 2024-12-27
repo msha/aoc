@@ -36,18 +36,6 @@ func getCombinations(n int, ops []string) [][]string {
 }
 
 func checkExpr(numbers []int, ops []string) int {
-	result := numbers[0]
-	for i, op := range ops {
-		num := numbers[i+1]
-		if op == "+" {
-			result += num
-		} else if op == "*" {
-			result *= num
-		}
-	}
-	return result
-}
-func checkExpr2(numbers []int, ops []string) int {
 	if len(numbers) == 0 {
 		return 0
 	}
@@ -102,7 +90,7 @@ func main() {
 		}
 		combinations2 := getCombinations(operatorSlots, operators2)
 		for _, ops := range combinations2 {
-			value := checkExpr2(inputArrays, ops)
+			value := checkExpr(inputArrays, ops)
 			if value == comp {
 				total2 += comp
 				break
