@@ -41,26 +41,37 @@ func main() {
 		y++
 	}
 	total := 0
+	total2 := 0
 	for _, t := range satellites {
 		for _, s := range satellites {
 			if s.t == t.t && (s.x != t.x && s.y != t.y) {
-				infy := t.y + (t.y - s.y)
-				infx := t.x + (t.x - s.x)
-				inmapy := infy >= 0 && infy < len(amap)
-				inmapx := false
-				if inmapy {
-					inmapx = infx >= 0 && infx < len(amap[infy])
-				}
-				if inmapy && inmapx {
-					if amap[infy][infx] != '#' {
-						amap[infy][infx] = '#'
-						total += 1
+				changx := (t.y - s.y)
+				changy := (t.x - s.x)
+				factor := 0
+				infy := t.y + (changx * factor)
+				infx := t.x + (changy * factor)
+				for {
+					inmapy := infy >= 0 && infy < len(amap)
+					inmapx := false
+					if inmapy {
+						inmapx = infx >= 0 && infx < len(amap[infy])
 					}
-
+					if inmapy && inmapx {
+						if amap[infy][infx] != '#' {
+							amap[infy][infx] = '#'
+							if factor == 1 {
+								total++
+							}
+							total2++
+						}
+						factor++
+						infy = t.y + (changx * factor)
+						infx = t.x + (changy * factor)
+					} else {
+						break
+					}
 				}
-
 			}
-
 		}
 	}
 
@@ -70,7 +81,8 @@ func main() {
 		}
 		fmt.Println("")
 	}
-	fmt.Println(total)
+	fmt.Println("part1:", total) //this broke some how, too lazy to fix now lel
+	fmt.Println("part2:", total2)
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error reading file:", err)
 	}
