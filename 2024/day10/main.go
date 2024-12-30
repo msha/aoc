@@ -71,6 +71,29 @@ func bfs(start cord, cords [][]rune) int {
 	return total
 }
 
+func bfs2(start cord, cords [][]rune) int {
+	queue := list.New()
+	visited := make(map[cord]bool)
+
+	queue.PushBack(start)
+	visited[start] = true
+	total := 0
+	for queue.Len() > 0 {
+		element := queue.Front()
+		node := element.Value.(cord)
+		queue.Remove(element)
+		for _, neighbor := range getNeighbors(node, cords) {
+			if neighbor.height == 9 {
+				total += 1
+			}
+			queue.PushBack(neighbor)
+			visited[neighbor] = true
+		}
+	}
+
+	return total
+}
+
 func main() {
 	file, err := os.Open("input.txt")
 	if err != nil {
@@ -96,10 +119,13 @@ func main() {
 		y++
 	}
 	total := 0
+	total2 := 0
 	for _, c := range trailheads {
 		total += bfs(c, amap)
+		total2 += bfs2(c, amap)
 	}
 	fmt.Println("part1:", total)
+	fmt.Println("part2:", total2)
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error reading file:", err)
 	}
