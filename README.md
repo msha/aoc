@@ -22,9 +22,9 @@ Maybe maybe, maybe this time i'll try to remember how to use GO. Day 1 was easy,
 | 08  | ⭐⭐  | ⭐⭐  |
 | 09  | ⭐⭐  | ⭐⭐  |
 | 10  | ⭐    | ⭐⭐  |
-| 11  | ⭐⭐  |
-| 12  | ⭐⭐  |
-| 13  | ⭐    |
+| 11  | ⭐⭐  | ⭐⭐  |
+| 12  | ⭐⭐  | ⭐    |
+| 13  | ⭐    | ⭐    |
 | 14  |       |
 | 15  |       |
 | 16  |       |
